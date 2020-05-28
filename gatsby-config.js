@@ -1,10 +1,12 @@
 const { global } = require('@storybook/design-system');
 const siteMetadata = require('./site-metadata');
+require('dotenv').config();
 
 module.exports = {
   siteMetadata,
   plugins: [
     'gatsby-plugin-react-helmet',
+    'gatsby-plugin-typescript',
     {
       resolve: `gatsby-source-filesystem`,
       options: {
@@ -12,7 +14,49 @@ module.exports = {
         path: `${__dirname}/src/images`,
       },
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `docs-next`,
+        path: `${__dirname}/docs/next/`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `docs-master`,
+        path: `${__dirname}/docs/master/`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `docs-addons`,
+        path: `${__dirname}/docs/addons/`,
+      },
+    },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `docs-maintenance`,
+        path: `${__dirname}/docs/maintenance/`,
+      },
+    },
     'gatsby-transformer-sharp',
+    'gatsby-transformer-json',
+    {
+      resolve: `gatsby-transformer-remark`,
+      options: {
+        plugins: [
+          {
+            resolve: `gatsby-remark-images`,
+            options: {
+              maxWidth: 800,
+            },
+          },
+        ],
+      },
+    },
     'gatsby-plugin-sharp',
     {
       resolve: `gatsby-plugin-manifest`,
@@ -31,6 +75,7 @@ module.exports = {
       },
     },
     `gatsby-plugin-styled-components`,
+    `gatsby-plugin-emotion`,
     {
       resolve: 'gatsby-source-github-repo',
       options: {

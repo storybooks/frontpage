@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link as GatsbyLink } from 'gatsby';
 
 import { Icon, Link, Subheading, styles } from '@storybook/design-system';
-import useSiteMetadata from '../lib/useSiteMetadata';
+import useSiteMetadata from '../../lib/useSiteMetadata';
 
 import ConfirmedMailingList from './ConfirmedMailingList';
 
@@ -320,7 +320,7 @@ export default function Footer({ ...props }) {
     youtube,
     navLinks = {},
     framework = {},
-    docs = {},
+    docsIntro,
     tutorials,
     gitHub = {},
   } = urls;
@@ -348,7 +348,7 @@ export default function Footer({ ...props }) {
                   <ResourceAction withArrow href={framework.angular}>
                     Angular
                   </ResourceAction>
-                  <ResourceAction withArrow href={docs.home}>
+                  <ResourceAction withArrow href={docsIntro}>
                     View more
                   </ResourceAction>
                 </ResourceActions>

@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import { Link as GatsbyLink } from 'gatsby';
 
 import { Icon, Link, TooltipLinkList, WithTooltip, styles } from '@storybook/design-system';
-import useSiteMetadata from '../lib/useSiteMetadata';
+import useSiteMetadata from '../../lib/useSiteMetadata';
 
 import StorybookLogoSVG from '../../images/logo-storybook.svg';
 
@@ -137,25 +137,31 @@ const NavWrapper = styled.nav`
   }
 `;
 
-const LinkWrapper = ({ href, isGatsby, ...props }) => {
+const LinkWrapper = ({ href, to = href, isGatsby, ...props }) => {
   if (isGatsby) {
-    return <GatsbyLink to={href} {...props} />;
+    return <GatsbyLink to={to} {...props} />;
   }
 
   // eslint-disable-next-line jsx-a11y/anchor-has-content
-  return <a href={href} {...props} />;
+  return <a href={to} {...props} />;
 };
 
 LinkWrapper.propTypes = {
-  href: PropTypes.string.isRequired,
+  to: PropTypes.string.isRequired,
+  href: PropTypes.string,
   isGatsby: PropTypes.bool.isRequired,
+};
+LinkWrapper.defaultProps = {
+  href: undefined,
 };
 
 export default function Header({ ...props }) {
-  const { latestVersion, urls = {} } = useSiteMetadata();
-  const { navCommunityLinks = {}, navLinks = {}, docs, tutorials, addons, gitHub = {} } = urls;
+  const { latestVersion, urls = {}, nav } = useSiteMetadata();
+  const { navCommunityLinks = {}, navLinks = {}, tutorials, addons, gitHub = {} } = urls;
 
   const navLinksWithGithub = [...navLinks, { title: 'GitHub', href: gitHub.repo, isGatsby: false }];
+
+  const docsLinks = Object.values(nav['docs-master']);
 
   const mobileMenu = (
     <MobileMenu>
@@ -169,6 +175,12 @@ export default function Header({ ...props }) {
     </MobileMenu>
   );
 
+  const docsMenu = (
+    <MobileMenu>
+      <TooltipLinkList links={docsLinks} LinkWrapper={LinkWrapper} />
+    </MobileMenu>
+  );
+
   return (
     <NavWrapper {...props}>
       <Nav>
@@ -177,15 +189,17 @@ export default function Header({ ...props }) {
             <LogotypeWrapper LinkWrapper={GatsbyLink} to="/">
               <img src={StorybookLogoSVG} alt="Storybook" />
             </LogotypeWrapper>
-            <Version href={gitHub.releases}>{latestVersion}</Version>
+            <Version href="/changelog">{latestVersion}</Version>
           </NavItem>
         </NavGroup>
 
         <NavGroup right>
           <NavItem showDesktop>
-            <NavLink tertiary href={docs.home}>
-              Docs
-            </NavLink>
+            <WithTooltip tagName="span" placement="top" trigger="hover" tooltip={docsMenu}>
+              <NavLink tertiary href="/docs/basics/introduction">
+                Docs <Icon icon="arrowdown" />
+              </NavLink>
+            </WithTooltip>
           </NavItem>
           <NavItem showDesktop>
             <NavLink tertiary href={tutorials}>
