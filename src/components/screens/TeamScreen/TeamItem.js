@@ -5,48 +5,26 @@ import styled from 'styled-components';
 import { Avatar, Icon, Link, styles } from '@storybook/design-system';
 import { LazyLoad } from '../../basics';
 
-const { color, typography, breakpoint } = styles;
+const { breakpoint, color, typography } = styles;
 
 const Profile = styled(Avatar)`
-  height: 80px;
-  width: 80px;
-  @media (min-width: ${breakpoint * 1}px) {
-    height: 120px;
-    width: 120px;
-  }
-`;
-
-const ImageOuter = styled.div`
-  margin-right: 20px;
-
-  @media (min-width: ${breakpoint * 1}px) {
-    margin-right: 0;
-    margin-bottom: 1.25rem;
-  }
+  height: 50px;
+  width: 50px;
 `;
 
 const Name = styled.div`
   font-size: ${typography.size.s3}px;
   font-weight: ${typography.weight.extrabold};
   color: ${color.darkest};
-  margin-bottom: 0.25rem;
 `;
 const Title = styled.div``;
 const Company = styled.span``;
-const Location = styled.div``;
 
 const Social = styled.div`
-  margin-top: 0.25rem;
-  @media (min-width: ${breakpoint * 1}px) {
-    margin-top: 0.5rem;
-  }
+  margin-top: 0.2rem;
 
   > a {
-    margin-right: 15px;
-
-    @media (min-width: ${breakpoint * 1}px) {
-      margin: 0 7.5px;
-    }
+    margin-right: 10px;
 
     svg {
       height: 1rem;
@@ -56,6 +34,7 @@ const Social = styled.div`
 `;
 
 const Meta = styled.div`
+  margin: 0.1em 0 0 1em;
   color: ${color.dark};
 `;
 
@@ -65,13 +44,20 @@ const Item = styled.div`
   position: relative;
   display: block;
   text-align: left;
-
+  padding: 2rem 10px 0 0;
   display: flex;
   flex-direction: row;
+  width: 100%;
+  justify-content: flex-start;
 
-  @media (min-width: ${breakpoint * 1}px) {
-    flex-direction: column;
-    text-align: center;
+  @media (min-width: ${breakpoint * 1.3}px) {
+    width: 50%;
+    justify-content: flex-start;
+  }
+
+  img {
+    width: 50px;
+    height: 50px;
   }
 `;
 
@@ -80,7 +66,6 @@ export default function TeamItem({
   title,
   company,
   companyUrl,
-  location,
   avatarUrl,
   gitHubUrl,
   twitterUrl,
@@ -88,11 +73,9 @@ export default function TeamItem({
 }) {
   return (
     <Item {...props}>
-      <ImageOuter>
-        <LazyLoad once placeholder={<Profile loading />} height="100%">
-          <Profile size="large" username={name} src={avatarUrl} />
-        </LazyLoad>
-      </ImageOuter>
+      <LazyLoad once placeholder={<Profile loading />} height="100%">
+        <Profile size="large" username={name} src={avatarUrl} />
+      </LazyLoad>
       <Meta>
         <Name>{name}</Name>
         <Title>
@@ -106,7 +89,6 @@ export default function TeamItem({
             </Company>
           )}
         </Title>
-        <Location>{location}</Location>
 
         {(gitHubUrl || twitterUrl) && (
           <Social>
@@ -132,7 +114,6 @@ TeamItem.propTypes = {
   title: PropTypes.string.isRequired,
   company: PropTypes.string,
   companyUrl: PropTypes.string,
-  location: PropTypes.string.isRequired,
   avatarUrl: PropTypes.string.isRequired,
   gitHubUrl: PropTypes.string,
   twitterUrl: PropTypes.string,
