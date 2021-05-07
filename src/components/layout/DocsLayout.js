@@ -166,7 +166,11 @@ function DocsLayout({ children, data, pageContext, ...props }) {
   } = useSiteMetadata();
   const { docsToc, framework } = pageContext;
   const [searchValue, setSearchValue] = useState('');
-  const { isSearchVisible } = useAlgoliaSearch({ framework });
+  const { isSearchVisible } = useAlgoliaSearch({
+    framework,
+    homepageUrl,
+    clearInput: () => setSearchValue(''),
+  });
 
   const addLinkWrappers = (items) =>
     items.map((item) => ({
